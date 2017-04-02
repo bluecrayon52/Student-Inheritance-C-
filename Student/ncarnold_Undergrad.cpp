@@ -175,10 +175,11 @@ class GradAsst : public Grad{
 
 class Undergrad : Student{
     
+    protected:
         float undergrad_rate;
         const char* year;
     
-    
+    public:
         // constructor
         Undergrad(string const &myName, string const &mySsn,float const &myGpa,int const &myCredits,
                   float const &myUrt, const char* myYear) : Student(myName, mySsn, myGpa, myCredits){
@@ -205,13 +206,11 @@ class Undergrad : Student{
     
     void print(){
         
-        cout.precision(2);
-        
         cout<<setw(20)<<setiosflags(ios::left)<<name<<" "
         <<setw(10)<<setiosflags(ios::left)<<ssn<<" "
         <<setw(10)<<setiosflags(ios::left)<<year<<" "
-        <<setw(10)<<setiosflags(ios::right)<<tuition()<<" "
-        <<setw(10)<<setiosflags(ios::right)<<gpa<<endl;
+        <<setw(10)<<setiosflags(ios::right)<<fixed<<setprecision(2)<<"$"<<tuition()<<" "
+        <<setw(10)<<setiosflags(ios::right)<<setprecision(2)<<gpa<<endl;
     }
     
    float tuition() const{
@@ -220,44 +219,44 @@ class Undergrad : Student{
        
        int i = credits;
        
-       if(i<=11){
+       if(i <= 11){
            tuition = undergrad_rate*i;
        }
+       
        else tuition = undergrad_rate*12;
        
        return tuition;
     }
     
-    int main() {
-        
-        
-        Undergrad Mary("Mary","000111222",4.0,12,585.75, "Junior");
-        
-        Mary.print();
-        
-        
-        // call print() and tuition() for three students using static and dynamic binding
-        
-        // Scan (read) file, construct students one by one, check input data
-        
-        // store students in a list container( one by one)
-        
-        // remove last student from list and insert in front of list
-        
-        //  using list iterator, print all students in list onto screen
-        
-        // initialize a vector that contains the list data
-        
-        // sort students according to GPA using generic sort algorithm
-        
-        // print all students in list onto screen again
-        
-        return 0;
-    }
-    
+  };
 
+
+int main() {
     
-};
+    
+    Undergrad Mary("Mary","000111222",4.0,12,585.75, "Junior");
+    
+    Mary.print();
+    
+    
+    // call print() and tuition() for three students using static and dynamic binding
+    
+    // Scan (read) file, construct students one by one, check input data
+    
+    // store students in a list container( one by one)
+    
+    // remove last student from list and insert in front of list
+    
+    //  using list iterator, print all students in list onto screen
+    
+    // initialize a vector that contains the list data
+    
+    // sort students according to GPA using generic sort algorithm
+    
+    // print all students in list onto screen again
+    
+    return 0;
+}
 
 
 
