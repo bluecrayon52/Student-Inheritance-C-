@@ -58,11 +58,17 @@ class Student{
         }
     
         // virtual function, print all data members in nice format
-        virtual void print(){
-        
+        virtual void print() const{
+            
+            cout.precision(2);
+            cout<<setw(20)<<setiosflags(ios::left)<<name<<" "
+                <<setw(10)<<setiosflags(ios::left)<<ssn<<" "
+                <<setw(10)<<setiosflags(ios::left)<<credits<<" credit  "
+                <<setw(10)<<setiosflags(ios::right)<<gpa<<endl;
         }
+    
         // pure virtual function
-        virtual float tuition()const = 0;
+        virtual float tuition() const = 0;
     
 };
 
@@ -86,8 +92,7 @@ class Grad : public Student{
         }
     
         char* get_thesis(){
-            char* a;
-            return a;
+            return thesis;
         }
     
         float get_rate(){
@@ -100,11 +105,18 @@ class Grad : public Student{
         }
     
         void print(){
+            
+            cout.precision(2);
+            cout<<setw(20)<<setiosflags(ios::left)<<name<<" "
+            <<setw(10)<<setiosflags(ios::left)<<ssn<<" "
+            <<setiosflags(ios::left)<<"graduate student"<<" "
+            <<setw(10)<<setiosflags(ios::left)<<credits<<endl;
         
         }
     
-        float tuition(){
+        float tuition() const{
         
+            return 0.0;
         }
     
 };
@@ -122,8 +134,8 @@ class GradAsst : public Grad{
     
         // constructor
         GradAsst(string const &myName, string const &mySsn,float const &myGpa, int const &myCredits,
-             float const &myGrt, char* const &myThesis, float const &myHrPay, char* const &mySuper,
-             char* const &myTask) : Grad( myName, mySsn, myGpa, myCredits, myGrt, myThesis){
+             float const &myGrt, char* const myThesis, float const &myHrPay, char* const mySuper,
+             char* const myTask) : Grad( myName, mySsn, myGpa, myCredits, myGrt, myThesis){
         
             hourPay = myHrPay;
             superviser = mySuper;
@@ -132,29 +144,29 @@ class GradAsst : public Grad{
         }
     
         char* get_supervisor(){
-            char* a;
-            return a;
+            
+            return superviser;
         
         }
     
         float get_hourPay(){
-            return 0.0;
+            return hourPay;
         }
     
-        void set_supervisor(char*){
+    void set_supervisor (char* const mySuper){
         
         }
     
-        void set_hourPay(float){
+        void set_hourPay(float const &myHrPay){
         
         }
     
         char* get_task(){
-            char* a;
-            return a;
+    
+            return task;
         }
     
-        void set_task(char*){
+        void set_task(const char* const myTask){
         
         }
     
@@ -164,9 +176,65 @@ class GradAsst : public Grad{
 class Undergrad : Student{
     
         float undergrad_rate;
-        char year;
+        const char* year;
     
-        int main() {
+    
+        // constructor
+        Undergrad(string const &myName, string const &mySsn,float const &myGpa,int const &myCredits,
+                  float const &myUrt, const char* myYear) : Student(myName, mySsn, myGpa, myCredits){
+            
+            undergrad_rate = myUrt;
+            year = myYear;
+        
+        }
+    
+        const char* get_year(){
+            
+            return year;
+        }
+    
+        float get_rate(){
+        
+            return undergrad_rate;
+        }
+    
+        void set_year(char* myYear){
+        
+            year = myYear;
+        }
+    
+    void print(){
+        
+        cout.precision(2);
+        
+        cout<<setw(20)<<setiosflags(ios::left)<<name<<" "
+        <<setw(10)<<setiosflags(ios::left)<<ssn<<" "
+        <<setw(10)<<setiosflags(ios::left)<<year<<" "
+        <<setw(10)<<setiosflags(ios::right)<<tuition()<<" "
+        <<setw(10)<<setiosflags(ios::right)<<gpa<<endl;
+    }
+    
+   float tuition() const{
+       
+       float tuition = 0;
+       
+       int i = credits;
+       
+       if(i<=11){
+           tuition = undergrad_rate*i;
+       }
+       else tuition = undergrad_rate*12;
+       
+       return tuition;
+    }
+    
+    int main() {
+        
+        
+        Undergrad Mary("Mary","000111222",4.0,12,585.75, "Junior");
+        
+        Mary.print();
+        
         
         // call print() and tuition() for three students using static and dynamic binding
         
@@ -184,36 +252,10 @@ class Undergrad : Student{
         
         // print all students in list onto screen again
         
-            return 0;
-        }
-    
-        // constructor
-        Undergrad(string const &myName, string const &mySsn,float const &myGpa,int const &myCredits,
-                  float const &myUrt,  char* const &myYear) : Student(myName, mySsn, myGpa, myCredits){
-        
-        }
-    
-        char* get_year(){
-            char* a;
-            return a;
-        }
-    
-        float get_rate(){
-        
-            return 0.0;
-        }
-    
-        void set_year(char*){
-        
-        }
-    
-    void print(){
-        
+        return 0;
     }
     
-    float tuition(){
-        
-    }
+
     
 };
 
