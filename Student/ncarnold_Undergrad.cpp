@@ -1,9 +1,6 @@
-//
-//
-//
-//
-//  Created by Nathaniel Clay Arnold  on 3/23/17.
-//  Copyright © 2017 Nathaniel Clay Arnold . All rights reserved.
+//  Project: C++ with STL
+// CSC 261-02 Spring 2017 
+//  Nathaniel Clay Arnold
 //
 
 #include <iostream>
@@ -15,6 +12,7 @@
 #include <vector> 
 #include <iterator>
 #include <list>
+#include <algorithm> 
 
 using namespace std;
 
@@ -263,6 +261,9 @@ class Undergrad : Student{
        return tuition;
     }
     
+    // overloading < operator
+    bool operator<(const Undergrad &rhs) const{ return gpa < rhs.gpa; }
+    
 };
 
 
@@ -291,16 +292,8 @@ int main() {
     
     // Scan (read) file, construct students one by one, check input data
    
-  //  ifstream f;
-  //  string rosterToken;
-   // f.open("underGradRost.txt");
-    // f >> rosterToken;
-    // getline(f, rosterToken); // read txt, all one line
-   //  f.close();
     
     string rosterToken = "Mary 000111222 Junior 12 4.0\nMark 111222333 Senior 15 3.5\nMindy 222333444 Freshman 18 3.7\nRob 333444555 Sophomore 13 2.7\nSam 444555666 Senior 16 3.0\nJen 555666777 Freshman 18 3.2\nJohn 666777888 Junior 14 3.3\n";
-    
-  // to contain full txt file info
     
     string studentToken; // to contain all student info
     
@@ -311,15 +304,13 @@ int main() {
     string delimit2 = " "; // seperates info
 
     
-    
     list<Undergrad> UnderRost;
-    
     float uRate = 380;
-    string tmpName;               //1st
-    string tmpSSN;                //2nd
-    char* tmpYear = nullptr;      //3rd
+    string tmpName = " ";          //1st
+    string tmpSSN = " ";           //2nd
+    char* tmpYear = nullptr;                 //3rd
     int tmpCredits = 0;           //4th
-    float tmpGPA = 1.2;           //5th
+    float tmpGPA = 0.0;           //5th
     
     size_t pos1 = 0;
     
@@ -345,50 +336,65 @@ int main() {
                     break;
                     
                 case 3: tmpYear = new char[dataToken.size()];
-                        strcpy(tmpYear,dataToken.c_str());
+                    strcpy(tmpYear,dataToken.c_str());
                     break;
                     
                 case 4: tmpCredits = atoi(dataToken.c_str());
                     break;
-                    
-                case 5: tmpGPA = stof(dataToken);
-                    break;
-             }
-        
+    
+                }
+            
             count++;
-
             studentToken.erase(0, pos + delimit2.length());
+            
         }
-    
-    // store students in a list container( one by one)
-   UnderRost.push_back(Undergrad(tmpName, tmpSSN, tmpGPA, tmpCredits, uRate, tmpYear));
-    
-
         
-    rosterToken.erase(0, pos1 + delimit1.length());
+        dataToken = studentToken.substr(0, pos);
+        tmpGPA = stof(dataToken);
+        
+        // store students in a list container( one by one)
+        UnderRost.push_back(Undergrad(tmpName, tmpSSN, tmpGPA, tmpCredits, uRate, tmpYear));
+    
+        rosterToken.erase(0, pos1 + delimit1.length());
+        
 }
 
     // remove last student from list and insert in front of list
     Undergrad tempUG = UnderRost.back();
+    UnderRost.pop_back();
     UnderRost.push_front(tempUG);
     
+    //  using list iterator, print all students in list onto screen
     cout<<left<<setw(20)<<"NAME"
-    <<setw(10)<<"SSN"
-    <<setw(10)<<"Year"
-    <<setw(10)<<"Credits"
+    <<setw(10)<<" SSN"
+    <<setw(10)<<"  Year"
+    <<setw(10)<<"   Credits"
     <<right<<setw(20)<<"Tuition"
     <<right<<setw(10)<<"GPA"<<endl;
     
-    //  using list iterator, print all students in list onto screen
     for (list<Undergrad>::iterator i = UnderRost.begin(); i != UnderRost.end(); i++){
         i->print();
     }
     
     // initialize a vector that contains the list data
-    
+    vector<Undergrad> v{UnderRost.begin(),UnderRost.end()};
+
     // sort students according to GPA using generic sort algorithm
+    sort(v.begin(), v.end());
     
     // print all students in list onto screen again
+    cout<<endl;
+    cout<<left<<setw(20)<<"NAME"
+    <<setw(10)<<" SSN"
+    <<setw(10)<<"  Year"
+    <<setw(10)<<"   Credits"
+    <<right<<setw(20)<<"Tuition"
+    <<right<<setw(10)<<"GPA"<<endl;
+    
+    for (vector<Undergrad>::iterator i = v.begin(); i != v.end(); i++){
+        i->print();
+    }
+
     
     return 0;
 }
