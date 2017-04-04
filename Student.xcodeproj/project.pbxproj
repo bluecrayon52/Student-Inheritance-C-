@@ -8,23 +8,53 @@
 
 /* Begin PBXBuildFile section */
 		538675691E9128D300BFD5CB /* ncarnold_Undergrad.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 533888DA1E843413009F234B /* ncarnold_Undergrad.cpp */; };
+		538675701E9374FD00BFD5CB /* underGradRost.txt in CopyFiles */ = {isa = PBXBuildFile; fileRef = 5386756F1E9374FD00BFD5CB /* underGradRost.txt */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
 		533888D51E843413009F234B /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
-			dstPath = /usr/share/man/man1/;
-			dstSubfolderSpec = 0;
+			dstPath = usr/share/man/man1;
+			dstSubfolderSpec = 16;
 			files = (
+				538675701E9374FD00BFD5CB /* underGradRost.txt in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 1;
+		};
+		5386756A1E93715F00BFD5CB /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 7;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		5386756B1E93716A00BFD5CB /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 7;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		5386756C1E93718800BFD5CB /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 7;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		533888D71E843413009F234B /* Student */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Student; sourceTree = BUILT_PRODUCTS_DIR; };
 		533888DA1E843413009F234B /* ncarnold_Undergrad.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = ncarnold_Undergrad.cpp; path = Student/ncarnold_Undergrad.cpp; sourceTree = "<group>"; };
+		5386756F1E9374FD00BFD5CB /* underGradRost.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = underGradRost.txt; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -44,6 +74,7 @@
 				533888D91E843413009F234B /* Student */,
 				533888D81E843413009F234B /* Products */,
 				533888DA1E843413009F234B /* ncarnold_Undergrad.cpp */,
+				5386756F1E9374FD00BFD5CB /* underGradRost.txt */,
 			);
 			sourceTree = "<group>";
 		};
@@ -72,6 +103,9 @@
 				533888D31E843413009F234B /* Sources */,
 				533888D41E843413009F234B /* Frameworks */,
 				533888D51E843413009F234B /* CopyFiles */,
+				5386756A1E93715F00BFD5CB /* CopyFiles */,
+				5386756B1E93716A00BFD5CB /* CopyFiles */,
+				5386756C1E93718800BFD5CB /* CopyFiles */,
 			);
 			buildRules = (
 			);

@@ -1,0 +1,2 @@
+Mary 000111222 Junior 12 4.0\nMark 111222333 Senior 15 3.5\nMindy 222333444 Freshman 18 3.7\nRob 333444555 Sophomore 13 2.7\nSam 444555666 Senior 16 3.0\nJen 555666777 Freshman 18 3.2\nJohn 666777888 Junior 14 3.3\n
+

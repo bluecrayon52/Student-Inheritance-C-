@@ -11,6 +11,10 @@
 #include <fstream>
 #include <string.h>
 #include <stdio.h>
+#include <algorithm> 
+#include <vector> 
+#include <iterator>
+#include <list>
 
 using namespace std;
 
@@ -60,11 +64,10 @@ class Student{
         // virtual function, print all data members in nice format
         virtual void print() const{
             
-            cout.precision(2);
-            cout<<setw(20)<<setiosflags(ios::left)<<name<<" "
-                <<setw(10)<<setiosflags(ios::left)<<ssn<<" "
-                <<setw(10)<<setiosflags(ios::left)<<credits<<" credit  "
-                <<setw(10)<<setiosflags(ios::right)<<gpa<<endl;
+            cout<<left<<setw(20)<<name<<" "
+                <<left<<setw(10)<<ssn<<" "
+                <<left<<setw(10)<<credits<<" "
+                <<right<<setw(10)<<gpa<<endl;
         }
     
         // pure virtual function
@@ -78,45 +81,59 @@ class Grad : public Student{
     protected:
     
         float grad_rate;
-        char* thesis;
+        const char* thesis;
     
     public:
     
         //constructor
         Grad(string const &myName, string const &mySsn,float const &myGpa, int const &myCredits,
-             float const &myGrt, char* const &myThesis) : Student(myName, mySsn, myGpa, myCredits){
+             float const &myGrt, const char* myThesis) : Student(myName, mySsn, myGpa, myCredits){
              
             grad_rate = myGrt;
             thesis = myThesis;
         
         }
     
-        char* get_thesis(){
+        const char* get_thesis(){
             return thesis;
         }
     
         float get_rate(){
      
-            return 0.0;
+            return grad_rate;
         }
     
-        void set_thesis(char*){
-        
+        void set_thesis(const char* myThesis){
+            thesis = myThesis;
         }
     
         void print(){
             
-            cout.precision(2);
-            cout<<setw(20)<<setiosflags(ios::left)<<name<<" "
-            <<setw(10)<<setiosflags(ios::left)<<ssn<<" "
-            <<setiosflags(ios::left)<<"graduate student"<<" "
-            <<setw(10)<<setiosflags(ios::left)<<credits<<endl;
+            cout<<left<<setw(20)<<name<<" "
+                <<setw(10)<<ssn
+                <<setw(10)<<" Graduate   "
+                <<setw(10)<<credits<<" "
+                <<right<<setw(10)<<"$"<<fixed<<setprecision(2)<<tuition()<<" "
+                <<setw(10)<<setprecision(2)<<gpa<<endl;
+            cout<<endl;
+            cout<<"   Thesis: "<<thesis<<endl;
+            cout<<endl;
         
         }
     
         float tuition() const{
         
-            return 0.0;
+            float tuition = 0;
+            
+            int i = credits;
+            
+            if(i <= 11){
+                tuition = grad_rate*i;
+            }
+            
+            else tuition = grad_rate*12;
+            
+            return tuition;
         }
     
 };
@@ -127,15 +144,15 @@ class GradAsst : public Grad{
     protected:
     
         float hourPay;
-        char* superviser;
-        char* task;
+        const  char* superviser;
+        const char* task;
     
     public:
     
         // constructor
         GradAsst(string const &myName, string const &mySsn,float const &myGpa, int const &myCredits,
-             float const &myGrt, char* const myThesis, float const &myHrPay, char* const mySuper,
-             char* const myTask) : Grad( myName, mySsn, myGpa, myCredits, myGrt, myThesis){
+             float const &myGrt, const char* myThesis, float const &myHrPay, const char* mySuper,
+             const char* myTask) : Grad( myName, mySsn, myGpa, myCredits, myGrt, myThesis){
         
             hourPay = myHrPay;
             superviser = mySuper;
@@ -143,8 +160,7 @@ class GradAsst : public Grad{
         
         }
     
-        char* get_supervisor(){
-            
+        const char* get_supervisor(){
             return superviser;
         
         }
@@ -153,22 +169,42 @@ class GradAsst : public Grad{
             return hourPay;
         }
     
-    void set_supervisor (char* const mySuper){
+        void set_supervisor (const char* const mySuper){
+            superviser = mySuper;
         
         }
     
         void set_hourPay(float const &myHrPay){
+            hourPay = myHrPay;
         
         }
     
-        char* get_task(){
-    
+        const char* get_task(){
             return task;
         }
     
         void set_task(const char* const myTask){
-        
+            task = myTask;
         }
+    
+        void print(){
+        
+            cout<<left<<setw(20)<<name<<" "
+                <<setw(10)<<ssn
+                <<setw(10)<<" Assistant "
+                <<setw(10)<<credits<<" "
+                <<right<<setw(10)<<"$"<<fixed<<setprecision(2)<<tuition()<<" "
+                <<setw(10)<<gpa<<endl;
+            cout<<endl;
+            cout<<"   Thesis: "<<thesis<<endl;
+            cout<<endl;
+            cout<<"   Task: "<<task<<endl;
+            cout<<endl;
+            cout<<"   Hourly Pay: $"<<fixed<<setprecision(2)<<hourPay<<endl;
+            cout<<endl;
+            cout<<"   Surpervisor: "<<superviser<<endl;
+            cout<<endl;
+    }
     
 };
 
@@ -176,41 +212,40 @@ class GradAsst : public Grad{
 class Undergrad : Student{
     
     protected:
-        float undergrad_rate;
-        const char* year;
+    float undergrad_rate;
+    char* year;
     
     public:
         // constructor
         Undergrad(string const &myName, string const &mySsn,float const &myGpa,int const &myCredits,
-                  float const &myUrt, const char* myYear) : Student(myName, mySsn, myGpa, myCredits){
+                  float const &myUrt, string const &myYear) : Student(myName, mySsn, myGpa, myCredits){
             
             undergrad_rate = myUrt;
-            year = myYear;
-        
+            year = new char[myYear.size()];
+            strcpy (year,myYear.c_str());
         }
     
-        const char* get_year(){
-            
+        char* get_year(){
             return year;
         }
     
         float get_rate(){
-        
             return undergrad_rate;
         }
     
         void set_year(char* myYear){
-        
             year = myYear;
         }
     
-    void print(){
+    void print() {
         
-        cout<<setw(20)<<setiosflags(ios::left)<<name<<" "
-        <<setw(10)<<setiosflags(ios::left)<<ssn<<" "
-        <<setw(10)<<setiosflags(ios::left)<<year<<" "
-        <<setw(10)<<setiosflags(ios::right)<<fixed<<setprecision(2)<<"$"<<tuition()<<" "
-        <<setw(10)<<setiosflags(ios::right)<<setprecision(2)<<gpa<<endl;
+        cout<<left<<setw(20)<<name<<" "
+            <<setw(10)<<ssn<<" "
+            <<setw(10)<<year<<" "
+            <<setw(10)<<credits<<" "
+            <<right<<setw(10)<<"$"<<fixed<<setprecision(2)<<tuition()<<" "
+            <<setw(10)<<gpa<<endl;
+        cout<<endl;
     }
     
    float tuition() const{
@@ -228,26 +263,126 @@ class Undergrad : Student{
        return tuition;
     }
     
-  };
+};
 
 
 int main() {
     
+        cout<<left<<setw(20)<<"NAME"
+            <<setw(10)<<"SSN"
+            <<setw(10)<<"Year"
+            <<setw(10)<<"Credits"
+            <<right<<setw(20)<<"Tuition"
+            <<right<<setw(10)<<"GPA"<<endl;
     
-    Undergrad Mary("Mary","000111222",4.0,12,585.75, "Junior");
+    // call print() and tuition() for three students using static and dynamic binding
+
+    Undergrad Mary("Mary","000111222",4.0,12,380, "Junior");
     
     Mary.print();
     
+    Grad David ("David", "111222333", 3.7, 9, 500, "How to learn data structures using C++/STL?");
     
-    // call print() and tuition() for three students using static and dynamic binding
+    David.print();
+    
+    GradAsst Jason("Jason", "222333444", 3.9, 9, 500, "Design of efficient algorythms", 20, "Dr.Fu", "Grading 330 projects and implementing a data mining algorithm");
+    
+    Jason.print();
     
     // Scan (read) file, construct students one by one, check input data
+   
+  //  ifstream f;
+  //  string rosterToken;
+   // f.open("underGradRost.txt");
+    // f >> rosterToken;
+    // getline(f, rosterToken); // read txt, all one line
+   //  f.close();
+    
+    string rosterToken = "Mary 000111222 Junior 12 4.0\nMark 111222333 Senior 15 3.5\nMindy 222333444 Freshman 18 3.7\nRob 333444555 Sophomore 13 2.7\nSam 444555666 Senior 16 3.0\nJen 555666777 Freshman 18 3.2\nJohn 666777888 Junior 14 3.3\n";
+    
+  // to contain full txt file info
+    
+    string studentToken; // to contain all student info
+    
+    string dataToken;   // to contain parsed sudent data
+    
+    string delimit1= "\n"; // seperates students
+    
+    string delimit2 = " "; // seperates info
+
+    
+    
+    list<Undergrad> UnderRost;
+    
+    float uRate = 380;
+    string tmpName;               //1st
+    string tmpSSN;                //2nd
+    char* tmpYear = nullptr;      //3rd
+    int tmpCredits = 0;           //4th
+    float tmpGPA = 1.2;           //5th
+    
+    size_t pos1 = 0;
+    
+    // loop through all students
+    while ((pos1 = rosterToken.find(delimit1)) != string::npos){
+        
+        studentToken = rosterToken.substr(0, pos1);
+        
+        int count = 1;
+        size_t pos = 0;
+
+        // loop through all student data
+        while ((pos = studentToken.find(delimit2)) != string::npos) {
+           
+            dataToken = studentToken.substr(0, pos);
+        
+            switch(count){
+                    
+                case 1: tmpName =dataToken;
+                    break;
+                    
+                case 2: tmpSSN = dataToken;
+                    break;
+                    
+                case 3: tmpYear = new char[dataToken.size()];
+                        strcpy(tmpYear,dataToken.c_str());
+                    break;
+                    
+                case 4: tmpCredits = atoi(dataToken.c_str());
+                    break;
+                    
+                case 5: tmpGPA = stof(dataToken);
+                    break;
+             }
+        
+            count++;
+
+            studentToken.erase(0, pos + delimit2.length());
+        }
     
     // store students in a list container( one by one)
+   UnderRost.push_back(Undergrad(tmpName, tmpSSN, tmpGPA, tmpCredits, uRate, tmpYear));
     
+
+        
+    rosterToken.erase(0, pos1 + delimit1.length());
+}
+
     // remove last student from list and insert in front of list
+    Undergrad tempUG = UnderRost.back();
+    UnderRost.push_front(tempUG);
+    
+    cout<<left<<setw(20)<<"NAME"
+    <<setw(10)<<"SSN"
+    <<setw(10)<<"Year"
+    <<setw(10)<<"Credits"
+    <<right<<setw(20)<<"Tuition"
+    <<right<<setw(10)<<"GPA"<<endl;
     
     //  using list iterator, print all students in list onto screen
+    for (list<Undergrad>::iterator i = UnderRost.begin(); i != UnderRost.end(); i++){
+        i->print();
+    }
     
     // initialize a vector that contains the list data
     
