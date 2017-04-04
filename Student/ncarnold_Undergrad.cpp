@@ -1,7 +1,7 @@
-//  Project: C++ with STL
-// CSC 261-02 Spring 2017 
-//  Nathaniel Clay Arnold
-//
+// Project: C++ with STL
+// CSC 261-02 Spring 2017
+// HAVE ABIDED BY THE UNCG Academic Integrity Policy ON THIS ASSIGNMENT
+// Nathaniel Clay Arnold
 
 #include <iostream>
 #include <iomanip>
@@ -35,27 +35,27 @@ class Student{
             gpa = myGpa;
             credits = myCredits;
             
-        // loop through myName string and assign to nam char array
+       /* // loop through myName string and assign to nam char array
            for( int i = 0; i < myName.length() && i < 21; i++){
                 name[i] = myName.at(i);
            }
             
         // null termination char
-            name[20] = '\0';
+            name[20] = '\0'; */
             
         // or try this way
-           // strcpy(name, myName.c_str());
+           strcpy(name, myName.c_str());
             
-        // loop through mySsn string and assing to ssn char array
+       /* // loop through mySsn string and assing to ssn char array
             for( int i = 0; i < 10 && i< mySsn.length(); i++){
                 ssn[i] = mySsn.at(i);
             }
             
         // null termination char
-            ssn[9] = '\0';
+            ssn[9] = '\0';*/
             
         // or try this way
-          // strcpy(ssn, mySsn.c_str());
+          strcpy(ssn, mySsn.c_str());
             
         }
     
@@ -79,30 +79,31 @@ class Grad : public Student{
     protected:
     
         float grad_rate;
-        const char* thesis;
+        char* thesis;
     
     public:
     
         //constructor
         Grad(string const &myName, string const &mySsn,float const &myGpa, int const &myCredits,
-             float const &myGrt, const char* myThesis) : Student(myName, mySsn, myGpa, myCredits){
+             float const &myGrt, string const &myThesis) : Student(myName, mySsn, myGpa, myCredits){
              
             grad_rate = myGrt;
-            thesis = myThesis;
+            thesis = new char[myThesis.size()];
+            strcpy(thesis,myThesis.c_str());
         
         }
     
-        const char* get_thesis(){
+        char* get_thesis(){
             return thesis;
         }
     
         float get_rate(){
-     
             return grad_rate;
         }
     
-        void set_thesis(const char* myThesis){
-            thesis = myThesis;
+        void set_thesis(string const &myThesis){
+            thesis = new char[myThesis.size()];
+            strcpy(thesis,myThesis.c_str());
         }
     
         void print(){
@@ -119,6 +120,7 @@ class Grad : public Student{
         
         }
     
+        // calculate the tuition based on tuition rate up to a full time cap
         float tuition() const{
         
             float tuition = 0;
@@ -142,23 +144,28 @@ class GradAsst : public Grad{
     protected:
     
         float hourPay;
-        const  char* superviser;
-        const char* task;
+        char* superviser;
+        char* task;
     
     public:
     
         // constructor
         GradAsst(string const &myName, string const &mySsn,float const &myGpa, int const &myCredits,
-             float const &myGrt, const char* myThesis, float const &myHrPay, const char* mySuper,
-             const char* myTask) : Grad( myName, mySsn, myGpa, myCredits, myGrt, myThesis){
+             float const &myGrt, string const &myThesis, float const &myHrPay, string const &mySuper,
+             string const &myTask) : Grad( myName, mySsn, myGpa, myCredits, myGrt, myThesis){
         
             hourPay = myHrPay;
-            superviser = mySuper;
-            task = myTask;
+            
+            superviser = new char[mySuper.size()];
+            strcpy(superviser,mySuper.c_str());
+            
+            task = new char[myTask.size()];
+            strcpy(task,myTask.c_str());
+        
         
         }
     
-        const char* get_supervisor(){
+        char* get_supervisor(){
             return superviser;
         
         }
@@ -167,9 +174,9 @@ class GradAsst : public Grad{
             return hourPay;
         }
     
-        void set_supervisor (const char* const mySuper){
-            superviser = mySuper;
-        
+        void set_supervisor (string const &mySuper){
+            superviser = new char[mySuper.size()];
+            strcpy(superviser,mySuper.c_str());
         }
     
         void set_hourPay(float const &myHrPay){
@@ -177,12 +184,14 @@ class GradAsst : public Grad{
         
         }
     
-        const char* get_task(){
+        char* get_task(){
             return task;
         }
     
-        void set_task(const char* const myTask){
-            task = myTask;
+        void set_task(string const &myTask){
+            task = new char[myTask.size()];
+            strcpy(task,myTask.c_str());
+
         }
     
         void print(){
@@ -291,9 +300,11 @@ int main() {
     Jason.print();
     
     // Scan (read) file, construct students one by one, check input data
-   
     
-    string rosterToken = "Mary 000111222 Junior 12 4.0\nMark 111222333 Senior 15 3.5\nMindy 222333444 Freshman 18 3.7\nRob 333444555 Sophomore 13 2.7\nSam 444555666 Senior 16 3.0\nJen 555666777 Freshman 18 3.2\nJohn 666777888 Junior 14 3.3\n";
+    ifstream ifs("underGradRost.txt");
+    
+    string rosterToken((istreambuf_iterator<char>(ifs)), istreambuf_iterator<char>());
+    
     
     string studentToken; // to contain all student info
     
@@ -306,9 +317,9 @@ int main() {
     
     list<Undergrad> UnderRost;
     float uRate = 380;
-    string tmpName = " ";          //1st
-    string tmpSSN = " ";           //2nd
-    char* tmpYear = nullptr;                 //3rd
+    string tmpName = " ";         //1st
+    string tmpSSN = " ";          //2nd
+    char* tmpYear = nullptr;      //3rd
     int tmpCredits = 0;           //4th
     float tmpGPA = 0.0;           //5th
     
@@ -321,7 +332,7 @@ int main() {
         
         int count = 1;
         size_t pos = 0;
-
+        
         // loop through all student data
         while ((pos = studentToken.find(delimit2)) != string::npos) {
            
@@ -365,6 +376,7 @@ int main() {
     UnderRost.push_front(tempUG);
     
     //  using list iterator, print all students in list onto screen
+    cout<<endl;
     cout<<left<<setw(20)<<"NAME"
     <<setw(10)<<" SSN"
     <<setw(10)<<"  Year"
