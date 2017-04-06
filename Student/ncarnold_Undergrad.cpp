@@ -35,27 +35,10 @@ class Student{
             gpa = myGpa;
             credits = myCredits;
             
-       /* // loop through myName string and assign to nam char array
-           for( int i = 0; i < myName.length() && i < 21; i++){
-                name[i] = myName.at(i);
-           }
-            
-        // null termination char
-            name[20] = '\0'; */
-            
-        // or try this way
+      
            strcpy(name, myName.c_str());
             
-       /* // loop through mySsn string and assing to ssn char array
-            for( int i = 0; i < 10 && i< mySsn.length(); i++){
-                ssn[i] = mySsn.at(i);
-            }
-            
-        // null termination char
-            ssn[9] = '\0';*/
-            
-        // or try this way
-          strcpy(ssn, mySsn.c_str());
+           strcpy(ssn, mySsn.c_str());
             
         }
     
@@ -299,18 +282,14 @@ int main() {
     
     Jason.print();
     
-    // Scan (read) file, construct students one by one, check input data
     
-    ifstream ifs("underGradRost.txt");
+    ifstream ifs;
     
-    string rosterToken((istreambuf_iterator<char>(ifs)), istreambuf_iterator<char>());
+    ifs.open("underGradRost.txt");
     
-    
-    string studentToken; // to contain all student info
+    string studentToken; // to contain each line of txt file
     
     string dataToken;   // to contain parsed sudent data
-    
-    string delimit1= "\n"; // seperates students
     
     string delimit2 = " "; // seperates info
 
@@ -323,50 +302,56 @@ int main() {
     int tmpCredits = 0;           //4th
     float tmpGPA = 0.0;           //5th
     
-    size_t pos1 = 0;
-    
-    // loop through all students
-    while ((pos1 = rosterToken.find(delimit1)) != string::npos){
+    while(!ifs.eof()){
         
-        studentToken = rosterToken.substr(0, pos1);
+        getline(ifs, studentToken);
         
-        int count = 1;
+        //cout<<"#"<<studentToken<<"#"<<endl; // test print statement
+        
         size_t pos = 0;
+        int count = 1;
         
-        // loop through all student data
-        while ((pos = studentToken.find(delimit2)) != string::npos) {
+            // loop through all student data
+            while ((pos = studentToken.find(delimit2)) != string::npos) {
            
-            dataToken = studentToken.substr(0, pos);
-        
-            switch(count){
+                dataToken = studentToken.substr(0, pos);
+                
+                
+                switch(count){
                     
-                case 1: tmpName =dataToken;
-                    break;
+                    case 1: tmpName =dataToken;
+                        break;
                     
-                case 2: tmpSSN = dataToken;
-                    break;
+                    case 2: tmpSSN = dataToken;
+                        break;
                     
-                case 3: tmpYear = new char[dataToken.size()];
-                    strcpy(tmpYear,dataToken.c_str());
-                    break;
+                    case 3: tmpYear = new char[dataToken.size()];
+                            strcpy(tmpYear,dataToken.c_str());
+                        break;
                     
-                case 4: tmpCredits = atoi(dataToken.c_str());
-                    break;
+                    case 4: tmpCredits = atoi(dataToken.c_str());
+                        break;
     
                 }
             
             count++;
+                
             studentToken.erase(0, pos + delimit2.length());
             
         }
         
         dataToken = studentToken.substr(0, pos);
-        tmpGPA = stof(dataToken);
+        
+        //cout<<"#"<<dataToken<<"#"<<endl;  // test print statement
+        
+        if(dataToken != ""){
+        tmpGPA = stof(dataToken.c_str());
+        }
         
         // store students in a list container( one by one)
         UnderRost.push_back(Undergrad(tmpName, tmpSSN, tmpGPA, tmpCredits, uRate, tmpYear));
     
-        rosterToken.erase(0, pos1 + delimit1.length());
+        studentToken.clear();
         
 }
 
