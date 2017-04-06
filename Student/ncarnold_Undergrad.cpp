@@ -1,5 +1,5 @@
 // Project: C++ with STL
-// CSC 261-02 Spring 2017
+// CSC 339-02 Spring 2017
 // HAVE ABIDED BY THE UNCG Academic Integrity Policy ON THIS ASSIGNMENT
 // Nathaniel Clay Arnold
 
